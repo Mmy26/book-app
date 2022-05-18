@@ -58,6 +58,15 @@ export default {
     next((vm) => {
       // dataのbookを一つのidの情報にする
       vm.book = vm.books[vm.$route.params.id]
+
+      // 読んだ日の情報の有無で既に無しの場合は、今日に日付を入れる
+      if (vm.book.readDate) {
+        vm.date = vm.book.readDate
+      } else {
+        vm.date = new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+          .toISOString()
+          .substr(0, 10)
+      }
     })
   },
 
@@ -67,9 +76,7 @@ export default {
   data() {
     return {
       book: '',
-      date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-        .toISOString()
-        .substr(0, 10),
+      date: '',
       menu: false,
     }
   },
