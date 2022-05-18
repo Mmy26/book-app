@@ -1,6 +1,10 @@
 <template>
   <div>
-    <NuxtChild :books="books" @add-book-list="addBook" />
+    <NuxtChild
+      :books="books"
+      @add-book-list="addBook"
+      @update-book-info="updateBookInfo"
+    />
   </div>
 </template>
 
@@ -67,6 +71,21 @@ export default {
       const parsed = JSON.stringify(this.books)
       // LocalStorageにデータを保存
       localStorage.setItem(STORAGE_KEY, parsed)
+    },
+    updateBookInfo(e) {
+      // 更新する情報の入ったオブジェクト
+      const updateInfo = {
+        id: e.id,
+        readDate: e.readDate,
+        memo: e.memo,
+        title: this.books[e.id].title,
+        image: this.books[e.id].iamge,
+        description: this.books[e.id].description,
+      }
+      // splice で指定のオブジェクトを上書き
+      this.books.splice(e.id, 1, updateInfo)
+      this.saveBooks()
+      this.$router.push(`/book/edit/${e.id}`)
     },
     goToEditPage(id) {
       this.$router.push(`/book/edit/${id}`)
