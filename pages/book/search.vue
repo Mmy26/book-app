@@ -26,7 +26,13 @@
               {{ book.description }}
               <v-spacer />
               <v-card-actions>
-                <v-btn class="mx-2" fab dark color="indigo">
+                <v-btn
+                  class="mx-2"
+                  fab
+                  dark
+                  color="indigo"
+                  @click="addBookList(i)"
+                >
                   <v-icon dark>mdi-plus</v-icon>
                 </v-btn>
               </v-card-actions>
@@ -51,6 +57,10 @@ export default {
     }
   },
   methods: {
+    addBookList(index) {
+      this.$emit('add-book-list', this.searchResults[index])
+      console.log(this.searchResults[index])
+    },
     async search(keyword) {
       // 初期化しておく
       this.searchResults = []
